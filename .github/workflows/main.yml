@@ -92,6 +92,9 @@ jobs:
     name: Tagging and Push to DockerHub
     runs-on: ubuntu-latest
     needs: [unit_test, integration_test]
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Download image artifact
