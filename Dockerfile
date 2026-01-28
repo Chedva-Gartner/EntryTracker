@@ -17,5 +17,8 @@ COPY app.py /app/
 # Expose the Flask app port
 EXPOSE 5000
 
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
 # Command to run the app
 CMD ["python", "app.py"]
