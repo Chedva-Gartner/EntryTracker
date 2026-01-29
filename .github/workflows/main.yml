@@ -142,13 +142,13 @@ jobs:
         
       - name: Get version from VERSION file
         id: get_version
-        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
+        run: echo "::set-output name=version::$(cat VERSION)"
 
       - name: Tag and Push to ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_NAME: entrytracker-app
-          VERSION: ${{ env.VERSION }}
+          VERSION: ${{ steps.get_version.outputs.version }}
         run: |
           docker tag entrytracker-app:${{ github.sha }} $ECR_REGISTRY/$IMAGE_NAME:$VERSION
           docker tag entrytracker-app:${{ github.sha }} $ECR_REGISTRY/$IMAGE_NAME:latest
