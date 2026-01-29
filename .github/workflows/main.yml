@@ -148,6 +148,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_NAME: entrytracker-app
+          VERSION: ${{ env.VERSION }}
         run: |
           docker tag entrytracker-app:${{ github.sha }} $ECR_REGISTRY/$IMAGE_NAME:$VERSION
           docker tag entrytracker-app:${{ github.sha }} $ECR_REGISTRY/$IMAGE_NAME:latest
