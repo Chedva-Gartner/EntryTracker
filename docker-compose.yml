@@ -13,6 +13,8 @@ services:
       - "5000:5000"
     depends_on:
       - mysql
+      condition: service_healthy
+      interval: 5s
     networks:
       - app_network
     restart: unless-stopped
@@ -26,9 +28,9 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
     healthcheck:
-    test: ["CMD", "mysqladmin" , "ping", "-h", "localhost"]
-    timeout: 3s
-    retries: 10
+      test: ["CMD", "mysqladmin" , "ping", "-h", "localhost"]
+      timeout: 3s
+      retries: 10
     networks:
       - app_network
     volumes:
