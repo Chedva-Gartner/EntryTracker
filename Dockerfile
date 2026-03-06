@@ -12,13 +12,13 @@ COPY requirements.txt /app/
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
 
-COPY app.py /app/
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
+COPY app.py /app/ --chown=appuser:appuser
 
 # Expose the Flask app port
 EXPOSE 5000
-
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
 
 # Command to run the app
 CMD ["python", "app.py"]
