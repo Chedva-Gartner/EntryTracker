@@ -6,16 +6,23 @@ ENV PYTHONUNBUFFERED=1
 # Set working directory
 WORKDIR /app
 
+# Create non-root user
+RUN useradd -m -u 1000 appuser
+
 # Copy app and dependencies
 COPY requirements.txt /app/
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
 
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
+# Copy application code
+COPY --chown=appuser:appuser app.py .
 
-COPY app.py /app/ --chown=appuser:appuser
+# Change ownership of working directory
+RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
 
 # Expose the Flask app port
 EXPOSE 5000
